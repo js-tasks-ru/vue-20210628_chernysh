@@ -1,10 +1,10 @@
 /**
  * Функция, возвращающая сумму двух чисел
  *
- * @param {Number} a - первое число
- * @param {Number} b - второе целое
- * @return {Number} сумма чисел a и b
+ * @param {number} a - первое число
+ * @param {number} b - второе целое
+ * @return {number} сумма чисел a и b
  */
 export function sum(a, b) {
-  // Решение
+  return a + b;
 }
