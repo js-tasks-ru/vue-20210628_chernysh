@@ -14,19 +14,18 @@ function fetchMeetupById(meetupId) {
   });
 }
 
-// Требуется создать Vue приложение
-const app = createApp({
+createApp({
   data() {
     return {
       meetupId: null,
       meetup: null,
-    }
+    };
   },
   watch: {
     meetupId(newMeetupId) {
       this.meetup = null;
       this.fetchMeetup(newMeetupId);
-    }
+    },
   },
   methods: {
     fetchMeetup(id) {
@@ -35,4 +34,4 @@ const app = createApp({
       });
     },
   },
-}).mount('#app')
+}).mount('#app');

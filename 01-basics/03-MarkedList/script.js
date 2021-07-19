@@ -29,13 +29,12 @@ const emails = [
   'Isaias_Kuhic@jarrett.net',
 ];
 
-// Требуется создать Vue приложение
-const app = createApp({
+createApp({
   data() {
     return {
       emails,
       filter: '',
-    }
+    };
   },
   computed: {
     markedEmails() {
@@ -45,4 +44,4 @@ const app = createApp({
       }));
       },
     },
-}).mount('#app')
+}).mount('#app');
