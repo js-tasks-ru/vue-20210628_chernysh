@@ -36,12 +36,13 @@ createApp({
       filter: '',
     };
   },
+
   computed: {
     markedEmails() {
       return this.emails.map((email) => ({
         email,
         marked: this.filter && email.includes(this.filter),
       }));
-      },
     },
+  },
 }).mount('#app');

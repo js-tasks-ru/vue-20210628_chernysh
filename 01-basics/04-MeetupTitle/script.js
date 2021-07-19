@@ -21,12 +21,14 @@ createApp({
       meetup: null,
     };
   },
+
   watch: {
     meetupId(newMeetupId) {
       this.meetup = null;
       this.fetchMeetup(newMeetupId);
     },
   },
+  
   methods: {
     fetchMeetup(id) {
       fetchMeetupById(id).then((meetup) => {
