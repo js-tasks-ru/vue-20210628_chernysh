@@ -28,7 +28,7 @@ createApp({
       this.fetchMeetup(newMeetupId);
     },
   },
-  
+
   methods: {
     fetchMeetup(id) {
       fetchMeetupById(id).then((meetup) => {
