@@ -15,11 +15,20 @@ export default defineComponent({
   },
   computed: {
     date_formating() {
-      return new Date(this.date).toLocaleString('ru', {
+      return new Date(this.date).toLocaleString(navigator.language, {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
       });
+    },
+    format_date() {
+      let date = new Date(this.date),
+          year = date.getFullYear(),
+          month = date.getMonth() + 1,
+          day = date.getDate();
+      if (day < 10) day = '0' + day;
+      if (month < 10) month = '0' + month;
+      return year + '-' + month + '-' + day;
     },
   },
   template: `
@@ -34,7 +43,7 @@ export default defineComponent({
       </li>
       <li>
         <img class="icon meetup-info__icon" alt="icon" src="/assets/icons/icon-cal-lg.svg" />
-        <time :datetime="2020-01-01">{{ date_formating }}</time>
+        <time :datetime="format_date">{{ date_formating }}</time>
       </li>
     </ul>`,
 });
