@@ -1,62 +1,81 @@
-import {defineComponent} from './vendor/vue.esm-browser.js';
+import { defineComponent } from './vendor/vue.esm-browser.js';
+import MeetupView from './MeetupView.js';
 import UiContainer from './UiContainer.js';
 import UiAlert from './UiAlert.js';
-import {fetchMeetupById} from './meetupService.js';
-import MeetupView from '../06-MeetupView/MeetupView.js';
+import { fetchMeetupById } from './meetupService.js';
+
+const States = {
+  IDLE: 'IDLE',
+  LOADING: 'LOADING',
+  SUCCESS: 'SUCCESS',
+  ERROR: 'ERROR',
+};
 
 export default defineComponent({
   name: 'PageMeetup',
 
+  States,
+
+  components: {
+    MeetupView,
+    UiAlert,
+    UiContainer,
+  },
+
   props: {
     meetupId: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
 
   data() {
     return {
+      state: States.IDLE,
       meetup: null,
-      errorMessage: null
+      error: null,
     };
   },
 
-  computed: {
-    loading() {
-      return (this.meetup ?? this.errorMessage) === null;
-    }
-  },
-
   watch: {
-    meetupId: {
-      handler(value) {
-        this.meetup = this.errorMessage = null;
-
-        fetchMeetupById(value).then(
-          result => this.meetup = result,
-          error => this.errorMessage = error.message
-        );
-      },
-      immediate: true
-    }
+    meetupId() {
+      this.fetch();
+    },
   },
 
-  components: {
-    UiAlert,
-    UiContainer,
-    MeetupView
+  mounted() {
+    this.fetch();
+  },
+
+  methods: {
+    fetch() {
+      // Переходим в состояние загрузки. Чистим данные и ошибку
+      this.state = States.LOADING;
+      this.meetup = null;
+      this.error = null;
+
+      fetchMeetupById(this.meetupId)
+        .then((meetup) => {
+          // Данные успешно получены
+          this.state = States.SUCCESS;
+          this.meetup = meetup;
+        })
+        .catch((error) => {
+          // Произошла ошибка при получении данных
+          this.state = States.ERROR;
+          this.error = error.message;
+        });
+    },
   },
 
   template: `
     <div class="page-meetup">
-    <ui-container v-if="loading">
-      <ui-alert>Загрузка...</ui-alert>
-    </ui-container>
-    <template v-else>
-      <meetup-view v-if="meetup" :meetup="meetup"></meetup-view>
-      <ui-container v-else>
-        <ui-alert>{{ errorMessage }}</ui-alert>
+      <meetup-view v-if="state === $options.States.SUCCESS" :meetup="meetup" />
+      <ui-container v-if="state === $options.States.LOADING">
+        <ui-alert >Загрузка...</ui-alert>
       </ui-container>
-    </template>
+      <ui-container v-if="state === $options.States.ERROR">
+        <ui-alert>{{ error }}</ui-alert>
+      </ui-container>
     </div>`,
 });
