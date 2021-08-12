@@ -71,9 +71,11 @@ export default defineComponent({
   template: `
     <div class="page-meetup">
       <meetup-view v-if="state === $options.States.SUCCESS" :meetup="meetup" />
+
       <ui-container v-if="state === $options.States.LOADING">
         <ui-alert >Загрузка...</ui-alert>
       </ui-container>
+
       <ui-container v-if="state === $options.States.ERROR">
         <ui-alert>{{ error }}</ui-alert>
       </ui-container>
