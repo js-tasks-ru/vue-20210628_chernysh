@@ -1,4 +1,4 @@
-import { defineComponent } from './vendor/vue.esm-browser.js';
+import {defineComponent} from './vendor/vue.esm-browser.js';
 import UiContainer from './UiContainer.js';
 import UiAlert from './UiAlert.js';
 import {fetchMeetupById} from './meetupService.js';
@@ -12,6 +12,13 @@ export default defineComponent({
       type: Number,
       required: true
     }
+  },
+
+  data() {
+    return {
+      meetup: null,
+      errorMessage: null
+    };
   },
 
   computed: {
@@ -34,13 +41,6 @@ export default defineComponent({
     }
   },
 
-  data() {
-    return {
-      meetup: null,
-      errorMessage: null
-    };
-  },
-
   components: {
     UiAlert,
     UiContainer,
@@ -49,15 +49,14 @@ export default defineComponent({
 
   template: `
     <div class="page-meetup">
-      <!-- meetup view -->
-      <ui-container v-if="loading">
-        <ui-alert>Загрузка...</ui-alert>
+    <ui-container v-if="loading">
+      <ui-alert>Загрузка...</ui-alert>
+    </ui-container>
+    <template v-else>
+      <meetup-view v-if="meetup" :meetup="meetup"></meetup-view>
+      <ui-container v-else>
+        <ui-alert>{{ errorMessage }}</ui-alert>
       </ui-container>
-      <template v-else>
-        <meetup-view v-if="meetup" :meetup="meetup"></meetup-view>
-        <ui-container v-else>
-          <ui-alert>{{ errorMessage }}</ui-alert>
-        </ui-container>
-      </template>
+    </template>
     </div>`,
 });

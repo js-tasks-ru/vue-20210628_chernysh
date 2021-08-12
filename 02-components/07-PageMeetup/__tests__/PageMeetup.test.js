@@ -18,7 +18,7 @@ describe('components/PageMeetup', () => {
     });
 
     it('PageMeetup должен выводить только текст "Загрузка..." во время загрузки данных', async () => {
-      jest.spyOn(meetupService, 'fetchMeetupById').mockResolvedValue(meetups[0]);
+      jest.spyOn(meetupService, 'fetchMeetupById').mockReturnValue(new Promise(() => {}));
       const wrapper = mount(PageMeetupTest, {
         props: { meetupId: meetups[0].id },
         global: { stubs: ['MeetupView'] },
